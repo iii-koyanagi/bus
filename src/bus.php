@@ -8,22 +8,16 @@ namespace TripleI\bus;
 
 class bus
 {
-    public function bus($priceAndPassengers)
+    public function adultsAndChildCalculate($priceAndPassengers)
     {
         $price = strstr($priceAndPassengers, ":", TRUE);
-
         $passengersWithColon = strstr($priceAndPassengers, ":");
         $passengersWithOutColon = str_replace(":", '', $passengersWithColon);
-
         $passengersArray = explode(",", $passengersWithOutColon);
 
         $adult_number = 0;
-        $child_number = 0;
-        $infant_number = 0;
-
         $adult_total_price = 0;
         $child_total_price = 0;
-        $infant_total_price = 0;
 
         foreach ($passengersArray as $passenger){
             $age = substr($passenger, 0, 1);
@@ -38,27 +32,19 @@ class bus
             }
 
             if ($age === 'C') {
-                $child_number += 1;
                 $child_edited_price = $price * 0.5;
+                $child_ceiling_price = $this->ceiling($child_edited_price, 10);
 
-                $child_final_price = $this->statusDiscount($child_edited_price, $status);
+                $child_final_price = $this->statusDiscount($child_ceiling_price, $status);
                 $child_total_price += $child_final_price;
             }
-
-            if ($age === 'I') {
-                $infant_number += 1;
-                $infant_edited_price = $price * 0.5;
-
-                $infant_final_price = $this->statusDiscount($infant_edited_price, $status);
-                $infant_total_price += $infant_final_price;
-            }
         }
-        $total = $adult_total_price + $child_total_price+$infant_total_price;
+        $adult_and_child_total = $adult_total_price + $child_total_price;
 
-        echo($total);
+        $this->infantCalculate($passengersArray, $adult_number, $adult_and_child_total);
     }
 
-    public function statusDiscount($edited_price, $status)
+    private function statusDiscount($edited_price, $status)
     {
         if ($status === 'n') {
             $final_price = $edited_price;
@@ -69,9 +55,20 @@ class bus
         }
 
         if ($status === 'w') {
-            $final_price = $edited_price * 0.5;
+            $before_final_price = $edited_price * 0.5;
+            $final_price = $this->ceiling($before_final_price, 10);
         }
 
         return $final_price;
+    }
+
+    private function ceiling($number, $significance = 1)
+    {
+        return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
+    }
+
+    private function infantCalculate($passengersArray, $adult_number, $adult_and_child_total)
+    {
+        echo($adult_and_child_total);
     }
 }
