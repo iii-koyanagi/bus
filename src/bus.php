@@ -41,7 +41,7 @@ class bus
         }
         $adult_and_child_total = $adult_total_price + $child_total_price;
 
-        $this->infantCalculate($passengersArray, $adult_number, $adult_and_child_total);
+        $this->infantCalculate($passengersArray, $price , $adult_number, $adult_and_child_total);
     }
 
     private function statusDiscount($edited_price, $status)
@@ -67,8 +67,27 @@ class bus
         return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
     }
 
-    private function infantCalculate($passengersArray, $adult_number, $adult_and_child_total)
+    private function infantCalculate($passengersArray, $price, $adult_number, $adult_and_child_total)
     {
-        echo($adult_and_child_total);
+        $infant_number = 0;
+        $infant_total_price = 0;
+        $infant_arr = array();
+
+        foreach ($passengersArray as $passenger){
+            $age = substr($passenger, 0, 1);
+            $status = substr($passenger, 1, 1);
+
+            if ($age === 'I') {
+                $infant_number += 1;
+
+                $infant_edited_price = $price * 0.5;
+                $infant_ceiling_price = $this->ceiling($infant_edited_price, 10);
+                $infant_final_price = $this->statusDiscount($infant_ceiling_price, $status);
+
+                $infant_arr[$status][] = $infant_final_price;
+            }
+        }
+
+        var_dump($infant_arr);
     }
 }
