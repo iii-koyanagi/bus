@@ -26,19 +26,41 @@ class bus
 
             if ($age === 'A') {
                 $adult_number += 1;
+                $adult_edited_price = $price;
+
+                $adult_final_price = $this->statusDiscount($adult_edited_price, $status);
             }
 
             if ($age === 'C') {
                 $child_number += 1;
+                $child_edited_price = $price * 0.5;
+
+                $child_final_price = $this->statusDiscount($child_edited_price, $status);
             }
 
             if ($age === 'I') {
                 $infant_number += 1;
+                $infant_edited_price = $price * 0.5;
+
+                $infant_final_price = $this->statusDiscount($infant_edited_price, $status);
             }
         }
+    }
 
-//        var_dump('A='.$adult_number);
-//        var_dump('C='.$child_number);
-//        var_dump('I='.$infant_number);
+    public function statusDiscount($edited_price, $status)
+    {
+        if ($status === 'n') {
+            $final_price = $edited_price;
+        }
+
+        if ($status === 'p') {
+            $final_price = 0;
+        }
+
+        if ($status === 'w') {
+            $final_price = $edited_price * 0.5;
+        }
+
+        return $final_price;
     }
 }
