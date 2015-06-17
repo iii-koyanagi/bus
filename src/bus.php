@@ -11,6 +11,10 @@ class bus
     public function bus($priceAndPassengers)
     {
         $price = strstr($priceAndPassengers, ":", TRUE);
-        $Passengers = strstr($priceAndPassengers, ":");
+
+        $passengersWithColon = strstr($priceAndPassengers, ":");
+        $passengersWithOutColon = str_replace(":", '', $passengersWithColon);
+
+        echo($passengersWithOutColon);
     }
 }
