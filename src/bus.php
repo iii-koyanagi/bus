@@ -70,7 +70,6 @@ class bus
     private function infantCalculate($passengersArray, $price, $adult_number, $adult_and_child_total)
     {
         $infant_number = 0;
-        $infant_total_price = 0;
         $infant_arr = array();
 
         foreach ($passengersArray as $passenger){
@@ -84,9 +83,13 @@ class bus
                 $infant_ceiling_price = $this->ceiling($infant_edited_price, 10);
                 $infant_final_price = $this->statusDiscount($infant_ceiling_price, $status);
 
-                $infant_arr[$status][] = $infant_final_price;
+                if ($status != 'p') {
+                    $infant_arr[][$status] = $infant_final_price;
+                }
             }
         }
+
+        $free_infants = $adult_number * 2;
 
         var_dump($infant_arr);
     }
