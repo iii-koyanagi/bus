@@ -15,6 +15,8 @@ class bus
         $passengersWithColon = strstr($priceAndPassengers, ":");
         $passengersWithOutColon = str_replace(":", '', $passengersWithColon);
 
-        echo($passengersWithOutColon);
+        $passengersArray = explode(",", $passengersWithOutColon);
+
+        var_dump($passengersArray);
     }
 }
