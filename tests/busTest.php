@@ -26,4 +26,11 @@ class busTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\TripleI\bus\Exception\LogicException');
         throw new Exception\LogicException;
     }
+
+    public function testBus()
+    {
+        $priceAndPassengers = '220:Cp,In';
+        $bus = new bus();
+        $bus->bus($priceAndPassengers);
+    }
 }

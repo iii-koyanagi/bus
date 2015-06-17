@@ -8,7 +8,9 @@ namespace TripleI\bus;
 
 class bus
 {
-    public function bus()
+    public function bus($priceAndPassengers)
     {
+        $price = strstr($priceAndPassengers, ":", TRUE);
+        $Passengers = strstr($priceAndPassengers, ":");
     }
 }
