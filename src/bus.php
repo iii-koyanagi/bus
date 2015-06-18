@@ -39,9 +39,9 @@ class bus
                 $child_total_price += $child_final_price;
             }
         }
-        $adult_and_child_total = $adult_total_price + $child_total_price;
 
-        $this->infantCalculate($passengersArray, $price , $adult_number, $adult_and_child_total);
+        $adult_and_child_total = $adult_total_price + $child_total_price;
+        $this->infantCalculateAndAllTotal($passengersArray, $price , $adult_number, $adult_and_child_total);
     }
 
     private function statusDiscount($edited_price, $status)
@@ -67,7 +67,7 @@ class bus
         return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
     }
 
-    private function infantCalculate($passengersArray, $price, $adult_number, $adult_and_child_total)
+    private function infantCalculateAndAllTotal($passengersArray, $price, $adult_number, $adult_and_child_total)
     {
         $infant_number = 0;
         $infant_arr = array();
@@ -78,7 +78,6 @@ class bus
 
             if ($age === 'I') {
                 $infant_number += 1;
-
                 $infant_edited_price = $price * 0.5;
                 $infant_ceiling_price = $this->ceiling($infant_edited_price, 10);
                 $infant_final_price = $this->statusDiscount($infant_ceiling_price, $status);
@@ -90,7 +89,28 @@ class bus
         }
 
         $free_infants = $adult_number * 2;
+        foreach ($infant_arr as $key => $infant) {
+            if (key($infant) === 'n') {
+                if ($free_infants != 0) {
+                    unset($infant_arr[$key]);
+                    $free_infants -= 1;
+                }
+            }
+        }
 
-        var_dump($infant_arr);
+        foreach ($infant_arr as $key => $infant) {
+            if ($free_infants != 0) {
+                unset($infant_arr[$key]);
+                $free_infants -= 1;
+            }
+        }
+
+        $infant_total = 0;
+        foreach ($infant_arr as $infant_price) {
+            $infant_total += array_values($infant_price)[0];
+        }
+
+        $all_total = $adult_and_child_total + $infant_total;
+        return $all_total;
     }
 }
