@@ -8,12 +8,22 @@ namespace TripleI\bus;
 
 class bus
 {
-    public function adultsAndChildCalculate($priceAndPassengers)
+    public function editData($data)
     {
-        $price = strstr($priceAndPassengers, ":", TRUE);
-        $passengersWithColon = strstr($priceAndPassengers, ":");
+        $price = strstr($data, ":", TRUE);
+        $passengersWithColon = strstr($data, ":");
         $passengersWithOutColon = str_replace(":", '', $passengersWithColon);
         $passengersArray = explode(",", $passengersWithOutColon);
+
+        $edited_data = array($price, $passengersArray);
+
+        return $edited_data;
+    }
+
+    public function adultsAndChildCalculate($edited_data)
+    {
+        $price = $edited_data[0];
+        $passengersArray = $edited_data[1];
 
         $adult_number = 0;
         $adult_total_price = 0;
@@ -41,7 +51,9 @@ class bus
         }
 
         $adult_and_child_total = $adult_total_price + $child_total_price;
-        $this->infantCalculateAndAllTotal($passengersArray, $price , $adult_number, $adult_and_child_total);
+        $adultsAndChildCalculate = array($adult_number, $adult_and_child_total);
+
+        return $adultsAndChildCalculate;
     }
 
     private function statusDiscount($edited_price, $status)
@@ -67,7 +79,7 @@ class bus
         return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
     }
 
-    private function infantCalculateAndAllTotal($passengersArray, $price, $adult_number, $adult_and_child_total)
+    public function infantCalculateAndAllTotal($price, $passengersArray, $adult_number, $adult_and_child_total)
     {
         $infant_number = 0;
         $infant_arr = array();

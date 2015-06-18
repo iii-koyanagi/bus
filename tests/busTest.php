@@ -29,8 +29,17 @@ class busTest extends \PHPUnit_Framework_TestCase
 
     public function testBus()
     {
-        $priceAndPassengers = '200:An,In,In,Ip,In,Iw,In';
+        $data = '1210:An,Ip,In,Iw,An,Iw,Iw,An,Iw,Iw';
         $bus = new bus();
-        $bus->adultsAndChildCalculate($priceAndPassengers);
+
+        $edit_data = $bus->editData($data);
+        $adultsAndChildCalculate = $bus->adultsAndChildCalculate($edit_data);
+
+        $price = $edit_data[0];
+        $passengersArray = $edit_data[1];
+        $adult_number = $adultsAndChildCalculate[0];
+        $adult_and_child_total = $adultsAndChildCalculate[1];
+
+        $total = $bus->infantCalculateAndAllTotal($price, $passengersArray, $adult_number, $adult_and_child_total);
     }
 }
